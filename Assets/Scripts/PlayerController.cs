@@ -5,9 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    public float moveSpeed;
+    public float baseMoveSpeed;
+    private float moveSpeed;
+
     public float jumpForce;
     public CharacterController controller;
+
+    public Transform target;
+    public int rotateSpeed;
 
     private Vector3 moveDirection;
     public float gravityScale;
@@ -21,6 +26,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveSpeed = 1.5f * baseMoveSpeed;
+        }
+        else { moveSpeed = baseMoveSpeed; }
+
         float yStore = moveDirection.y;
 
         moveDirection = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
@@ -36,8 +48,13 @@ public class PlayerController : MonoBehaviour
             }
 
         }
+
         moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale * Time.deltaTime);
         controller.Move(moveDirection * Time.deltaTime);
 
+
+        //get x position of mouse and rotate target
+        float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
+        target.Rotate(0, horizontal, 0);
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//NOT USED ANYMORE USE NewCameraController
 public class CameraController : MonoBehaviour
 {
 
@@ -36,8 +38,8 @@ public class CameraController : MonoBehaviour
     {
 
         //get x position of mouse and rotate target
-        float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
-        target.Rotate(0, horizontal, 0);
+        //float horizontal = Input.GetAxis("Mouse X") * rotateSpeed;
+       // target.Rotate(0, horizontal, 0);
 
         //Get the Y position of the mouse & rotate the pivot
         float vertical = Input.GetAxis("Mouse Y") * rotateSpeed;
@@ -68,13 +70,12 @@ public class CameraController : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(desiredXAngle, desiredYAngle, 0);
         transform.position = target.position - (rotation * offset);
 
-        //old transform.position = target.position - offset;
-
         if(transform.position.y <= target.position.y)
         {
             transform.position = new Vector3(transform.position.x, target.position.y - .5f, transform.position.z);
         }
 
         transform.LookAt(target);
+        //transform.LookAt(target.transform.position + target.transform.forward*10);
     }
 }
