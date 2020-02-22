@@ -14,10 +14,10 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - Bullet
+  - Player Projectile
   - Player
-  - 
-  - 
+  - Enemy Projectile
+  - Enemy
   - 
   - 
   - 
