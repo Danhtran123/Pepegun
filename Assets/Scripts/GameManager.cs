@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    public float currentSpeedItem;
+    private float maxSpeed = 2.5f;
+    public float currentJumpItem;
+    private float maxJump = 5.0f;
+
+    public void AddSpeed(float item)
     {
-        
+        if(currentSpeedItem >= maxSpeed)
+        {
+            currentSpeedItem = maxSpeed;
+        }
+        else
+        {
+            currentSpeedItem += item;
+        }
+    }
+    
+    public void AddJump(float item)
+    {
+        if(currentJumpItem >= maxJump)
+        {
+            currentJumpItem = maxJump;
+        }
+        else
+        {
+            currentJumpItem += item;
+        }
     }
 }

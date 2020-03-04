@@ -34,7 +34,7 @@ public class EnemyCombat : MonoBehaviour
     {
         GameObject projectile = Instantiate(effectToSpawn) as GameObject;
         projectile.transform.position = transform.position;
-        projectile.transform.rotation = transform.rotation;
+        projectile.transform.rotation = enemy.transform.rotation;
 
     }
 }

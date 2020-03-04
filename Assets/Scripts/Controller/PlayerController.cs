@@ -7,9 +7,13 @@ public class PlayerController : MonoBehaviour
 
     public float baseMoveSpeed;
     private float moveSpeed;
+    public float itemSpeedMod;
 
     public float jumpForce;
+    public float itemJumpMod;
     public CharacterController controller;
+
+    public GameManager g1;
 
     public Transform target;
     private float rotateSpeed;
@@ -33,13 +37,16 @@ public class PlayerController : MonoBehaviour
         GameObject camObj = GameObject.Find("CameraBase");
         cam = camObj.GetComponent<NewCameraController>();
         rotateSpeed = cam.inputSensitivity;
+
+        g1 = g1.GetComponent<GameManager>();
     }
 
     // Updates player rotation based on horizontal mouse movement
     // Player movement based on "WASD"
     void Update()
     {
-
+        itemSpeedMod = g1.currentSpeedItem;
+        itemJumpMod = g1.currentJumpItem;
         Run();
 
         float yStore = moveDirection.y;
@@ -47,9 +54,10 @@ public class PlayerController : MonoBehaviour
         float vertInput = Input.GetAxis("Vertical");
         float horizInput = Input.GetAxis("Horizontal");
         moveDirection = (transform.forward * vertInput) + (transform.right * horizInput);
-        moveDirection = Vector3.ClampMagnitude(moveDirection, 1) * moveSpeed;
+        moveDirection = Vector3.ClampMagnitude(moveDirection, 1) * (moveSpeed+itemSpeedMod);
         moveDirection.y = yStore;
 
+        //If on slope push player down
         if((vertInput != 0 || horizInput != 0) && onSlope())
         {
             controller.Move(Vector3.down * characterHeight / 2 * slopeForce * Time.deltaTime);
@@ -85,7 +93,7 @@ public class PlayerController : MonoBehaviour
             moveDirection.y = 0f;
             if (Input.GetButtonDown("Jump"))
             {
-                moveDirection.y = jumpForce;
+                moveDirection.y = jumpForce+itemJumpMod;
             }
         }
         moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale * Time.deltaTime);
