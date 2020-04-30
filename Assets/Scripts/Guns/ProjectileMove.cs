@@ -4,20 +4,13 @@ using UnityEngine;
 
 //Place script on projectile type, allows for different damage/speeds/range, Works for at least machinegun
 // Ideas/Code comes from https://www.youtube.com/watch?v=xenW67bXTgM and https://www.youtube.com/watch?v=DEtZUeVY9qk
-public class ProjectileMove : MonoBehaviour
+public class ProjectileMove : ProjectileStat
 {
-
-    public float Damage;
-    public float Speed;
-    public float Range;
-    private Vector3 initialDistance;
 
     void Start()
     {
         initialDistance = transform.position;
-        //ignores player and own bullets
-        Physics.IgnoreLayerCollision(9, 9);
-        Physics.IgnoreLayerCollision(9, 10);
+
     }
 
     // Update is called once per frame
@@ -37,13 +30,21 @@ public class ProjectileMove : MonoBehaviour
 
     void OnCollisionEnter(Collision co)
     {
+        Destroy(gameObject);
         EnemyController target = co.transform.GetComponent<EnemyController>();
-        if(target != null)
+        PlayerController player = co.transform.GetComponent<PlayerController>();
+        if(target != null && hasCollide == false)
         {
-            Debug.Log(target);
+            hasCollide = true;
+            Debug.Log(target.name + " took " + Damage + " damage");
             target.TakeDamage(Damage);
         }
-        Speed = 0;
-        Destroy(gameObject);
+        if (player != null && hasCollide == false)
+        {
+            hasCollide = true;
+            Debug.Log(player + " took " + Damage + " damage");
+            player.TakeDamage((int)Damage);
+        }
+        
     }
 }

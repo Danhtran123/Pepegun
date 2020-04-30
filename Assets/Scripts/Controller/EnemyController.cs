@@ -8,15 +8,18 @@ public class EnemyController : MonoBehaviour
 
     Transform target;
     NavMeshAgent agent;
-    public GameObject player;
+    GameObject player;
+    GameManager man;
 
     public float health;
 
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
         target = player.transform;
         agent = GetComponent<NavMeshAgent>();
+        man = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -38,7 +41,6 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(float amount)
     {
         health -= amount;
-        Debug.Log(health);
         if (health <= 0)
         {
             Die();
@@ -48,5 +50,23 @@ public class EnemyController : MonoBehaviour
     void Die()
     {
         Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        int scoreAdd = 0;
+        if(transform.name == "Summoner(Clone)")
+        {
+            scoreAdd = 100;
+        } else if(transform.name =="Basic Enemy(Clone)")
+        {
+            scoreAdd = 50;
+        } else if(transform.name == "SummonedMonster(Clone)")
+        {
+            scoreAdd = 10;
+        }
+        Debug.Log(transform.name);
+        Debug.Log(scoreAdd);
+        man.AddScore(scoreAdd);
     }
 }

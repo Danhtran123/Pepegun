@@ -11,11 +11,14 @@ public class CameraCollision : MonoBehaviour
     public Vector3 dollyDirAdjusted;
     public float distance;
 
+    LayerMask mask;
+
     // Start is called before the first frame update
     void Awake()
     {
         dollyDir = transform.localPosition.normalized;
         distance = transform.localPosition.magnitude;
+        mask = LayerMask.GetMask("Player Projectile");
     }
 
     // Update is called once per frame
@@ -24,7 +27,8 @@ public class CameraCollision : MonoBehaviour
         Vector3 desiredCameraPos = transform.parent.TransformPoint(dollyDir * maxDistance);
         RaycastHit hit;
 
-        if(Physics.Linecast (transform.parent.position, desiredCameraPos, out hit))
+        //squiggly line inverts the output so in this case, everything but Player Projectile. fixes camera zooming in and out inside slow projectiles
+        if(Physics.Linecast (transform.parent.position, desiredCameraPos, out hit, ~mask))
         {
             distance = Mathf.Clamp(hit.distance * 0.9f, minDistance, maxDistance);
         }

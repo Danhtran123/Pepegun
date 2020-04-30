@@ -6,26 +6,28 @@ public class EnemyCombat : MonoBehaviour
 {
 
     public GameObject prefab;
-    private GameObject effectToSpawn;
+    protected GameObject effectToSpawn;
 
-    public float fireRate;
-    private float nextTimeToFire;
+    public float minAtkTime;
+    public float maxAtkTime;
 
-    public GameObject enemy;
+    protected float attackTime;
+    protected float attackTimeHolder;
 
     // Start is called before the first frame update
     void Start()
     {
         effectToSpawn = prefab;
-
+        attackTime = Random.Range(minAtkTime,maxAtkTime);
+        attackTimeHolder = attackTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.time >= nextTimeToFire)
-        {
-            nextTimeToFire = Time.time + 1f / fireRate;
+        attackTime -= Time.deltaTime;
+        if(attackTime <= 0){
+            attackTime = attackTimeHolder;
             Shoot();
         }
     }
@@ -34,7 +36,7 @@ public class EnemyCombat : MonoBehaviour
     {
         GameObject projectile = Instantiate(effectToSpawn) as GameObject;
         projectile.transform.position = transform.position;
-        projectile.transform.rotation = enemy.transform.rotation;
+        projectile.transform.rotation = transform.parent.gameObject.transform.rotation;
 
     }
 }
